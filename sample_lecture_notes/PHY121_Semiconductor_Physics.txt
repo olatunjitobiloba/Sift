@@ -1,0 +1,13 @@
+# PHY 121: General Physics II - Semiconductor Devices
+## Topic: P-N Junction Diode Conduction
+
+When p-type and n-type semiconductor materials are brought into metallurgical contact, mobile majority charge carriers diffuse across the junction.
+Holes diffuse from the p-side to the n-side, while electrons diffuse from the n-side to the p-side.
+
+This leaves uncompensated donor ions in the n-region and acceptor ions in the p-region, creating the depletion region.
+An internal electric field is established, creating a barrier potential:
+- Approximately 0.7V for Silicon diodes
+- Approximately 0.3V for Germanium diodes
+
+Under forward bias condition:
+The external positive terminal connects to the p-side and negative terminal to the n-side. This reduces the barrier width and allows large diffusion current to flow through the device.

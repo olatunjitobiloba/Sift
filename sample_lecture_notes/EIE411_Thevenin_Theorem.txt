@@ -1,0 +1,14 @@
+# EIE 411: Network Analysis & Synthesis
+## Topic: Thevenin's and Norton's Theorems
+
+Thevenin's theorem states that any linear two-terminal circuit consisting of resistors, dependent sources, and independent sources can be replaced by an equivalent circuit consisting of an independent voltage source (V_th) in series with an equivalent resistance (R_th).
+
+To determine the Thevenin voltage:
+1. Remove the load resistor connected between terminals A and B.
+2. Calculate the open-circuit voltage across terminals A and B using nodal analysis or mesh analysis.
+
+To determine the Thevenin equivalent resistance:
+1. Deactivate all independent sources (short-circuit ideal voltage sources, open-circuit ideal current sources).
+2. Measure or compute the total resistance looking back into terminals A and B.
+
+Norton's theorem is the source-transformation dual of Thevenin's theorem, replacing the network with a parallel current source (I_N) and Norton resistance (R_N = R_th).
