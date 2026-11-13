@@ -15,10 +15,10 @@
 | Full Name | GitHub Username | Student Email | Sprint 1 Role | Module Responsibility | Initial PR Link | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Olatunji Oluwatobiloba** | `@olatunjitobiloba` | *Updated on branch* | Product Owner / Dev (AI) | Product Vision, Local Agent & Search Pipeline | *Repo Creator* | Baseline Merged |
-| **Sharon Bakare** | `@github-username` | *Updated on branch* | Scrum Master / Dev (UI) | Sprint Rhythm, React Web Dashboard & Local UI | *Pending PR* | In Progress |
-| **Philip** | `@github-username` | *Updated on branch* | Developer | Mobile Client (React Native / Expo) | *Pending PR* | In Progress |
-| **Elisha** | `@github-username` | *Updated on branch* | Developer | REST API, PostgreSQL & Command Relay | *Pending PR* | In Progress |
-| **Somto** | `@github-username` | *Updated on branch* | Developer (DevOps / QA) | CI/CD, Tests, Security Audit & Docs | *Pending PR* | In Progress |
+| **Sharon Bakare** | `@milahg1` | *Updated on branch* | Scrum Master / Dev (UI) | Sprint Rhythm, React Web Dashboard & Local UI | *Pending PR* | Invite Accepted |
+| **Philip** | `@Philips-Ay` | *Updated on branch* | Developer | Mobile Client (React Native / Expo) | *Pending PR* | Invite Sent |
+| **Elisha Oghweremu** | `@Elisha45` | *Updated on branch* | Developer | REST API, PostgreSQL & Command Relay | *Pending PR* | Invite Sent |
+| **Somto (Sergius)** | `@SergiusE` | *Updated on branch* | Developer (DevOps / QA) | CI/CD, Tests, Security Audit & Docs | *Pending PR* | Invite Sent |
 
 ---
 

@@ -12,10 +12,10 @@ Students and professionals can search their own lecture recordings, PDFs, slides
 
 ## 2. Team Roster & Sprint 1 Roles
 - **Olatunji Oluwatobiloba** (`@olatunjitobiloba`) — **Product Owner** & AI/ML Lead (Local Agent, Whisper Transcription, Embeddings, Search Pipeline)
-- **Sharon Bakare** — **Scrum Master** & Frontend Engineer (React Web & Local Dashboard)
-- **Philip** — Developer: Mobile Engineer (React Native / Expo)
-- **Elisha** — Developer: Backend Engineer (REST API, Relay Service & PostgreSQL Metadata)
-- **Somto** — Developer: DevOps & QA Engineer (CI/CD, Security Audits, Jupyter Analytics & Docs)
+- **Sharon Bakare** (`@milahg1`) — **Scrum Master** & Frontend Engineer (React Web & Local Dashboard)
+- **Philip** (`@Philips-Ay`) — Developer: Mobile Engineer (React Native / Expo)
+- **Elisha Oghweremu** (`@Elisha45`) — Developer: Backend Engineer (REST API, Relay Service & PostgreSQL Metadata)
+- **Somto (Sergius)** (`@SergiusE`) — Developer: DevOps & QA Engineer (CI/CD, Security Audits, Jupyter Analytics & Docs)
 
 *(See [`TEAM.md`](./TEAM.md) for full branch-contribution records and role rotations).*
 
