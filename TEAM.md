@@ -1,0 +1,31 @@
+# Team Roster & Contribution Log
+
+**Course**: CPE434 Computer Software Engineering I  
+**Department**: Electrical and Information Engineering, Covenant University  
+**Project**: Sift  
+
+> **Course Requirement (Slide 36, Step 4)**:  
+> Each member must clone the repository, create their own branch (e.g. `feature/add-<your-name>`), update their entry in the table below, submit a Pull Request, have a teammate review it, and merge to `main`.  
+> *Your commits are your individual evidence for continuous assessment marks.*
+
+---
+
+## Member Directory & Sprint 1 Allocations
+
+| Full Name | GitHub Username | Student Email | Sprint 1 Role | Module Responsibility | Initial PR Link | Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Olatunji Oluwatobiloba** | `@olatunjitobiloba` | *Updated on branch* | Developer (AI Lead) | Local Agent, Whisper & Vector Search | *Repo Creator* | Baseline Merged |
+| **Sharon Bakare** | `@github-username` | *Updated on branch* | Product Owner / Dev | React Web Dashboard & Local UI | *Pending PR* | In Progress |
+| **Philip** | `@github-username` | *Updated on branch* | Developer | Mobile Client (React Native / Expo) | *Pending PR* | In Progress |
+| **Elisha** | `@github-username` | *Updated on branch* | Developer | REST API, PostgreSQL & Command Relay | *Pending PR* | In Progress |
+| **Somto** | `@github-username` | *Updated on branch* | Scrum Master / QA | CI/CD, Tests, Security Audit & Docs | *Pending PR* | In Progress |
+
+---
+
+## Team Branching & Review Protocol
+1. **Protected Branch**: `main` is production-ready code. Direct pushes are disabled.
+2. **Branch Naming**: `feature/<module>-<action>` (e.g., `feature/api-auth-endpoints`, `feature/agent-pdf-extraction`).
+3. **Pull Request Protocol**:
+   - Title: `feat(<module>): <concise summary>`
+   - Description includes: Changes made, verification command output, and course AI disclosure.
+   - Requires at least 1 approving peer review before merge.
