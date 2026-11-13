@@ -29,6 +29,7 @@ Students and professionals can search their own lecture files and documents by d
 ---
 
 ## 4. Work In Progress (WIP) Limits
+- **To do limit**: **5 cards maximum** (strictly capped to Sprint 1 committed deliverables).
 - **In Progress limit**: **5 cards maximum** (strictly 1 active task card per developer at any given time to eliminate context switching and unfinished PRs).
 - **In Review limit**: 3 cards maximum.
 
