@@ -8,13 +8,14 @@ Students and professionals can search their own lecture files and documents by d
 ## 2. Roles for Sprint 1 (Weeks 3–5)
 *(Roles rotate each sprint as required by the course syllabus)*
 
-- **Product Owner**: Sharon Bakare (Owns requirements, user stories, acceptance criteria, and stakeholder communication)
-- **Scrum Master**: Somto (Facilitates sprint rhythm, enforces WIP limits, unblocks teammates, monitors DoD compliance)
+- **Product Owner**: Olatunji Oluwatobiloba (Owns product vision, backlog prioritization, user stories, and lecturer alignment)
+- **Scrum Master**: Sharon Bakare (Facilitates sprint rhythm, enforces WIP limits, unblocks teammates, monitors DoD compliance)
 - **Developers**:
   - **Olatunji Oluwatobiloba**: AI/ML Lead (Local Agent, Whisper transcription, embedding pipeline, SQLite FTS5/vector indexing)
-  - **Elisha**: Backend Engineer (REST API service, device management, command relay, PostgreSQL metadata)
-  - **Philip**: Mobile Engineer (React Native / Expo mobile client, device pairing, remote command triggers)
   - **Sharon Bakare**: Frontend Engineer (React web dashboard and local UI controls)
+  - **Philip**: Mobile Engineer (React Native / Expo mobile client, device pairing, remote command triggers)
+  - **Elisha**: Backend Engineer (REST API service, device management, command relay, PostgreSQL metadata)
+  - **Somto**: DevOps & QA Engineer (CI/CD pipelines, security audits, Jupyter notebook evaluation)
 
 ---
 

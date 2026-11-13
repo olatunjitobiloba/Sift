@@ -14,11 +14,11 @@
 
 | Full Name | GitHub Username | Student Email | Sprint 1 Role | Module Responsibility | Initial PR Link | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Olatunji Oluwatobiloba** | `@olatunjitobiloba` | *Updated on branch* | Developer (AI Lead) | Local Agent, Whisper & Vector Search | *Repo Creator* | Baseline Merged |
-| **Sharon Bakare** | `@github-username` | *Updated on branch* | Product Owner / Dev | React Web Dashboard & Local UI | *Pending PR* | In Progress |
+| **Olatunji Oluwatobiloba** | `@olatunjitobiloba` | *Updated on branch* | Product Owner / Dev (AI) | Product Vision, Local Agent & Search Pipeline | *Repo Creator* | Baseline Merged |
+| **Sharon Bakare** | `@github-username` | *Updated on branch* | Scrum Master / Dev (UI) | Sprint Rhythm, React Web Dashboard & Local UI | *Pending PR* | In Progress |
 | **Philip** | `@github-username` | *Updated on branch* | Developer | Mobile Client (React Native / Expo) | *Pending PR* | In Progress |
 | **Elisha** | `@github-username` | *Updated on branch* | Developer | REST API, PostgreSQL & Command Relay | *Pending PR* | In Progress |
-| **Somto** | `@github-username` | *Updated on branch* | Scrum Master / QA | CI/CD, Tests, Security Audit & Docs | *Pending PR* | In Progress |
+| **Somto** | `@github-username` | *Updated on branch* | Developer (DevOps / QA) | CI/CD, Tests, Security Audit & Docs | *Pending PR* | In Progress |
 
 ---
 
