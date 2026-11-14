@@ -1,4 +1,5 @@
 import os
+import time
 import tempfile
 from pathlib import Path
 
@@ -18,6 +19,14 @@ def make_folder(text="Deadlock happens when two threads wait on each other."):
     return d
 
 
+def wait_scan():
+    for _ in range(100):
+        if not client.get("/scan/status", headers=H).json()["running"]:
+            return
+        time.sleep(0.1)
+    raise AssertionError("scan never finished")
+
+
 def test_health_is_open():
     assert client.get("/health").status_code == 200
 
@@ -30,8 +39,9 @@ def test_token_required():
 def test_index_and_search():
     d = make_folder()
     client.post("/folders", json={"path": d}, headers=H)
-    r = client.post("/scan", headers=H).json()
-    assert r["indexed"] >= 1
+    assert client.post("/scan", headers=H).status_code == 202
+    wait_scan()
+    assert client.get("/scan/status", headers=H).json()["indexed"] >= 1
     hits = client.get("/search", params={"q": "deadlock"}, headers=H).json()
     assert len(hits) >= 1
 

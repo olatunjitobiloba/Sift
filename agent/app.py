@@ -3,6 +3,7 @@ import re
 import sqlite3
 import hashlib
 import secrets
+import threading
 from pathlib import Path
 from contextlib import contextmanager
 from fastapi import FastAPI, HTTPException, Depends
@@ -17,6 +18,15 @@ DB_PATH = HOME / "index.db"
 TOKEN_PATH = HOME / "token"
 TEXT_EXT = {".txt", ".md", ".pdf"}
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv"}
+
+SCAN = {
+    "running": False,
+    "done": 0,
+    "total": 0,
+    "indexed": 0,
+    "unchanged": 0,
+    "failed": 0,
+}
 
 if not TOKEN_PATH.exists():
     TOKEN_PATH.write_text(secrets.token_urlsafe(32), encoding="utf-8")
@@ -120,38 +130,59 @@ def remove_folder(f: Folder):
     return {"removed": p}
 
 
-@app.post("/scan", dependencies=auth)
-def scan():
-    seen = skipped = failed = 0
-    with db() as c:
-        if is_paused(c):
-            raise HTTPException(status_code=409, detail="Indexing is paused")
-        folders = [r[0] for r in c.execute("SELECT path FROM folders")]
-        for folder in folders:
-            fpath = Path(folder)
-            if not fpath.exists():
-                continue
-            for fp in fpath.rglob("*"):
-                if fp.suffix.lower() not in TEXT_EXT or not fp.is_file():
+def do_scan():
+    try:
+        with db() as c:
+            folders = [r[0] for r in c.execute("SELECT path FROM folders")]
+            files = []
+            for folder in folders:
+                folder_path = Path(folder)
+                if not folder_path.exists():
                     continue
-                if any(part in SKIP_DIRS for part in fp.parts):
-                    continue
+                for fp in folder_path.rglob("*"):
+                    if (
+                        fp.suffix.lower() in TEXT_EXT
+                        and fp.is_file()
+                        and not any(p in SKIP_DIRS for p in fp.parts)
+                    ):
+                        files.append(fp)
+            SCAN.update(total=len(files), done=0, indexed=0, unchanged=0, failed=0)
+            for fp in files:
+                SCAN["done"] += 1
                 try:
                     text = extract(fp)
                 except Exception:
-                    failed += 1
+                    SCAN["failed"] += 1
                     continue
                 h = hashlib.sha256(text.encode("utf-8", errors="ignore")).hexdigest()
                 row = c.execute("SELECT hash FROM files WHERE path=?", (str(fp),)).fetchone()
                 if row and row[0] == h:
-                    skipped += 1
+                    SCAN["unchanged"] += 1
                     continue
                 c.execute("DELETE FROM chunks WHERE path=?", (str(fp),))
                 for part in chunk(text):
                     c.execute("INSERT INTO chunks VALUES (?, ?)", (str(fp), part))
                 c.execute("INSERT OR REPLACE INTO files VALUES (?, ?)", (str(fp), h))
-                seen += 1
-    return {"indexed": seen, "unchanged": skipped, "failed": failed}
+                SCAN["indexed"] += 1
+    finally:
+        SCAN["running"] = False
+
+
+@app.post("/scan", dependencies=auth, status_code=202)
+def scan():
+    with db() as c:
+        if is_paused(c):
+            raise HTTPException(409, "Indexing is paused")
+    if SCAN["running"]:
+        raise HTTPException(409, "Scan already running")
+    SCAN["running"] = True
+    threading.Thread(target=do_scan, daemon=True).start()
+    return {"started": True}
+
+
+@app.get("/scan/status", dependencies=auth)
+def scan_status():
+    return SCAN
 
 
 @app.get("/search", dependencies=auth)

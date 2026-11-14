@@ -1,4 +1,5 @@
 import os
+import time
 import tempfile
 from pathlib import Path
 
@@ -9,6 +10,14 @@ import app as agent
 
 client = TestClient(agent.app)
 H = {"X-Sift-Token": agent.TOKEN}
+
+
+def wait_scan():
+    for _ in range(100):
+        if not client.get("/scan/status", headers=H).json()["running"]:
+            return
+        time.sleep(0.1)
+    raise AssertionError("scan never finished")
 
 
 def test_health():
@@ -39,15 +48,17 @@ def test_indexing_search_and_deletion_lifecycle():
         assert res_folder.status_code == 200
         assert str(tmp_path.resolve()) in res_folder.json()["added"]
 
-        # 2. Run scan
+        # 2. Run scan (asynchronous 202)
         res_scan = client.post("/scan", headers=H)
-        assert res_scan.status_code == 200
-        assert res_scan.json()["indexed"] >= 1
+        assert res_scan.status_code == 202
+        wait_scan()
+        assert client.get("/scan/status", headers=H).json()["indexed"] >= 1
 
         # 3. Rescan without changes -> skipped/unchanged
         res_rescan = client.post("/scan", headers=H)
-        assert res_rescan.status_code == 200
-        assert res_rescan.json()["unchanged"] >= 1
+        assert res_rescan.status_code == 202
+        wait_scan()
+        assert client.get("/scan/status", headers=H).json()["unchanged"] >= 1
 
         # 4. Search for keyword
         res_search = client.get("/search", params={"q": "Thevenin"}, headers=H)
