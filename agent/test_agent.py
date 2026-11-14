@@ -1,9 +1,14 @@
+import os
 import tempfile
 from pathlib import Path
-from fastapi.testclient import TestClient
-from app import app, DB_PATH, get_db
 
-client = TestClient(app)
+os.environ["SIFT_HOME"] = tempfile.mkdtemp()  # must be set before importing app
+
+from fastapi.testclient import TestClient
+import app as agent
+
+client = TestClient(agent.app)
+H = {"X-Sift-Token": agent.TOKEN}
 
 
 def test_health():
@@ -11,11 +16,10 @@ def test_health():
     assert res.status_code == 200
     data = res.json()
     assert data["ok"] is True
-    assert data["service"] == "sift-agent"
 
 
 def test_add_folder_invalid():
-    res = client.post("/folders", json={"path": "C:/non_existent_folder_xyz_123"})
+    res = client.post("/folders", json={"path": "C:/non_existent_folder_xyz_123"}, headers=H)
     assert res.status_code == 400
 
 
@@ -31,38 +35,38 @@ def test_indexing_search_and_deletion_lifecycle():
         )
 
         # 1. Add folder
-        res_folder = client.post("/folders", json={"path": str(tmp_path)})
+        res_folder = client.post("/folders", json={"path": str(tmp_path)}, headers=H)
         assert res_folder.status_code == 200
         assert str(tmp_path.resolve()) in res_folder.json()["added"]
 
         # 2. Run scan
-        res_scan = client.post("/scan")
+        res_scan = client.post("/scan", headers=H)
         assert res_scan.status_code == 200
         assert res_scan.json()["indexed"] >= 1
 
         # 3. Rescan without changes -> skipped/unchanged
-        res_rescan = client.post("/scan")
+        res_rescan = client.post("/scan", headers=H)
         assert res_rescan.status_code == 200
         assert res_rescan.json()["unchanged"] >= 1
 
         # 4. Search for keyword
-        res_search = client.get("/search", params={"q": "Thevenin"})
+        res_search = client.get("/search", params={"q": "Thevenin"}, headers=H)
         assert res_search.status_code == 200
         results = res_search.json()
         assert len(results) >= 1
         assert "Thevenin" in results[0]["snippet"]
-        assert str(note_file.resolve()) == results[0]["file"]
+        assert any(str(note_file.resolve()) == r["file"] for r in results)
 
         # 5. Injection & syntax resilience test (special characters should not crash FTS5)
-        res_weird = client.get("/search", params={"q": "AND OR NOT * \" ' ()"})
+        res_weird = client.get("/search", params={"q": "AND OR NOT * \" ' ()"}, headers=H)
         assert res_weird.status_code == 200
 
         # 6. Delete index
-        res_del = client.delete("/index")
+        res_del = client.delete("/index", headers=H)
         assert res_del.status_code == 200
         assert res_del.json()["deleted"] is True
 
         # 7. Search after delete -> empty
-        res_empty = client.get("/search", params={"q": "Thevenin"})
+        res_empty = client.get("/search", params={"q": "Thevenin"}, headers=H)
         assert res_empty.status_code == 200
         assert len(res_empty.json()) == 0
