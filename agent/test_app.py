@@ -74,3 +74,41 @@ def test_folder_management():
     res_del = client.request("DELETE", "/folders", json={"path": d}, headers=H)
     assert res_del.status_code == 200
     assert str(res_del.json()["removed"]) == str(Path(d).expanduser().resolve())
+
+
+def test_deleted_file_leaves_index():
+    d = make_folder("zebra crossing rules")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H)
+    wait_scan()
+    assert len(client.get("/search", params={"q": "zebra"}, headers=H).json()) >= 1
+    os.remove(os.path.join(d, "os.txt"))
+    client.post("/scan", headers=H)
+    wait_scan()
+    assert client.get("/search", params={"q": "zebra"}, headers=H).json() == []
+
+
+def test_exclude_pattern():
+    d = make_folder("quokka habitat")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/excludes", json={"pattern": "os.txt"}, headers=H)
+    client.post("/scan", headers=H)
+    wait_scan()
+    assert client.get("/search", params={"q": "quokka"}, headers=H).json() == []
+    client.request("DELETE", "/excludes", json={"pattern": "os.txt"}, headers=H)
+
+
+def test_list_files_and_excludes():
+    d = make_folder("sample file test")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H)
+    wait_scan()
+    files = client.get("/files", headers=H).json()
+    assert len(files) >= 1
+    assert any("os.txt" in f for f in files)
+
+    client.post("/excludes", json={"pattern": "*.secret"}, headers=H)
+    excludes = client.get("/excludes", headers=H).json()
+    assert "*.secret" in excludes
+    client.request("DELETE", "/excludes", json={"pattern": "*.secret"}, headers=H)
+    assert "*.secret" not in client.get("/excludes", headers=H).json()

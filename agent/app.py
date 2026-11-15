@@ -1,5 +1,6 @@
 import os
 import re
+import fnmatch
 import sqlite3
 import hashlib
 import secrets
@@ -26,6 +27,7 @@ SCAN = {
     "indexed": 0,
     "unchanged": 0,
     "failed": 0,
+    "removed": 0,
 }
 
 if not TOKEN_PATH.exists():
@@ -58,6 +60,7 @@ def get_db():
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("CREATE TABLE IF NOT EXISTS folders(path TEXT PRIMARY KEY)")
     conn.execute("CREATE TABLE IF NOT EXISTS files(path TEXT PRIMARY KEY, hash TEXT)")
+    conn.execute("CREATE TABLE IF NOT EXISTS excludes(pattern TEXT PRIMARY KEY)")
     conn.execute("CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT)")
     conn.execute("CREATE VIRTUAL TABLE IF NOT EXISTS chunks USING fts5(path UNINDEXED, text)")
     try:
@@ -79,6 +82,10 @@ class Folder(BaseModel):
     path: str
 
 
+class Pattern(BaseModel):
+    pattern: str
+
+
 def chunk(text: str, size: int = 800):
     parts, buf = [], ""
     for para in re.split(r"\n\s*\n", text):
@@ -96,6 +103,10 @@ def extract(fp: Path) -> str:
         reader = PdfReader(str(fp))
         return "\n\n".join((p.extract_text() or "") for p in reader.pages)
     return fp.read_text(encoding="utf-8", errors="ignore")
+
+
+def excluded(fp: Path, patterns):
+    return any(fnmatch.fnmatch(part, pat) for part in fp.parts for pat in patterns)
 
 
 @app.get("/health")
@@ -130,10 +141,44 @@ def remove_folder(f: Folder):
     return {"removed": p}
 
 
+@app.get("/excludes", dependencies=auth)
+def list_excludes():
+    with db() as c:
+        return [r[0] for r in c.execute("SELECT pattern FROM excludes ORDER BY pattern")]
+
+
+@app.post("/excludes", dependencies=auth)
+def add_exclude(p: Pattern):
+    pat = p.pattern.strip()
+    if not pat:
+        raise HTTPException(400, "Empty pattern")
+    with db() as c:
+        c.execute("INSERT OR IGNORE INTO excludes VALUES (?)", (pat,))
+    return {"added": pat}
+
+
+@app.delete("/excludes", dependencies=auth)
+def remove_exclude(p: Pattern):
+    with db() as c:
+        c.execute("DELETE FROM excludes WHERE pattern=?", (p.pattern,))
+    return {"removed": p.pattern}
+
+
+@app.get("/files", dependencies=auth)
+def list_files(limit: int = 100, offset: int = 0):
+    with db() as c:
+        rows = c.execute(
+            "SELECT path FROM files ORDER BY path LIMIT ? OFFSET ?",
+            (min(limit, 500), offset),
+        ).fetchall()
+    return [r[0] for r in rows]
+
+
 def do_scan():
     try:
         with db() as c:
             folders = [r[0] for r in c.execute("SELECT path FROM folders")]
+            pats = [r[0] for r in c.execute("SELECT pattern FROM excludes")]
             files = []
             for folder in folders:
                 folder_path = Path(folder)
@@ -144,9 +189,10 @@ def do_scan():
                         fp.suffix.lower() in TEXT_EXT
                         and fp.is_file()
                         and not any(p in SKIP_DIRS for p in fp.parts)
+                        and not excluded(fp, pats)
                     ):
                         files.append(fp)
-            SCAN.update(total=len(files), done=0, indexed=0, unchanged=0, failed=0)
+            SCAN.update(total=len(files), done=0, indexed=0, unchanged=0, failed=0, removed=0)
             for fp in files:
                 SCAN["done"] += 1
                 try:
@@ -164,6 +210,13 @@ def do_scan():
                     c.execute("INSERT INTO chunks VALUES (?, ?)", (str(fp), part))
                 c.execute("INSERT OR REPLACE INTO files VALUES (?, ?)", (str(fp), h))
                 SCAN["indexed"] += 1
+
+            keep = {str(f) for f in files}
+            for (p,) in c.execute("SELECT path FROM files").fetchall():
+                if p not in keep:
+                    c.execute("DELETE FROM chunks WHERE path=?", (p,))
+                    c.execute("DELETE FROM files WHERE path=?", (p,))
+                    SCAN["removed"] += 1
     finally:
         SCAN["running"] = False
 
