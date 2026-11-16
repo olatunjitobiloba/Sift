@@ -112,3 +112,38 @@ def test_list_files_and_excludes():
     assert "*.secret" in excludes
     client.request("DELETE", "/excludes", json={"pattern": "*.secret"}, headers=H)
     assert "*.secret" not in client.get("/excludes", headers=H).json()
+
+
+def test_remove_folder_keeps_sibling():
+    base = tempfile.mkdtemp()
+    a, b = os.path.join(base, "notes"), os.path.join(base, "notes2")
+    os.mkdir(a); os.mkdir(b)
+    open(os.path.join(a, "a.txt"), "w").write("giraffe neck")
+    open(os.path.join(b, "b.txt"), "w").write("giraffe tall")
+    client.post("/folders", json={"path": a}, headers=H)
+    client.post("/folders", json={"path": b}, headers=H)
+    client.post("/scan", headers=H); wait_scan()
+    client.request("DELETE", "/folders", json={"path": a}, headers=H)
+    hits = client.get("/search", params={"q": "giraffe"}, headers=H).json()
+    assert len(hits) == 1 and hits[0]["file"].endswith("b.txt")
+
+
+def test_one_hit_per_file():
+    d = tempfile.mkdtemp()
+    text = "\n\n".join(["wombat " * 100] * 3)  # long enough for several chunks
+    open(os.path.join(d, "w.txt"), "w").write(text)
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H); wait_scan()
+    hits = client.get("/search", params={"q": "wombat"}, headers=H).json()
+    assert len(hits) == 1
+
+
+def test_ext_filter():
+    d = tempfile.mkdtemp()
+    open(os.path.join(d, "x.txt"), "w").write("platypus fact")
+    open(os.path.join(d, "y.md"), "w").write("platypus fact")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H); wait_scan()
+    hits = client.get("/search", params={"q": "platypus", "ext": "md"}, headers=H).json()
+    assert len(hits) == 1 and hits[0]["file"].endswith(".md")
+

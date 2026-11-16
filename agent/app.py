@@ -133,11 +133,12 @@ def add_folder(f: Folder):
 @app.delete("/folders", dependencies=auth)
 def remove_folder(f: Folder):
     p = str(Path(f.path).expanduser().resolve())
-    n = len(p)
+    prefix = p + os.sep
+    n = len(prefix)
     with db() as c:
         c.execute("DELETE FROM folders WHERE path=?", (p,))
-        c.execute("DELETE FROM chunks WHERE substr(path,1,?)=?", (n, p))
-        c.execute("DELETE FROM files WHERE substr(path,1,?)=?", (n, p))
+        c.execute("DELETE FROM chunks WHERE substr(path,1,?)=?", (n, prefix))
+        c.execute("DELETE FROM files WHERE substr(path,1,?)=?", (n, prefix))
     return {"removed": p}
 
 
@@ -239,19 +240,37 @@ def scan_status():
 
 
 @app.get("/search", dependencies=auth)
-def search(q: str, limit: int = 10):
+def search(q: str, limit: int = 10, ext: str = "", folder: str = ""):
     # quote each word so user text cannot break FTS5 syntax
     terms = [t.replace('"', "") for t in q.split() if t.strip('"')]
     if not terms:
         return []
     match = " ".join(f'"{t}"' for t in terms)
+    limit = min(limit, 50)
+    sql = ("SELECT path, snippet(chunks, 1, '[', ']', '...', 12), bm25(chunks) "
+           "FROM chunks WHERE chunks MATCH ?")
+    args = [match]
+    if ext:
+        e = "." + re.sub(r"[^a-z0-9]", "", ext.lower())
+        sql += " AND lower(path) LIKE ?"
+        args.append("%" + e)
+    if folder:
+        pre = str(Path(folder).expanduser().resolve()) + os.sep
+        sql += " AND substr(path,1,?)=?"
+        args += [len(pre), pre]
+    sql += " ORDER BY bm25(chunks) LIMIT ?"
+    args.append(limit * 5)  # fetch extra, then keep one chunk per file
     with db() as c:
-        rows = c.execute(
-            "SELECT path, snippet(chunks, 1, '[', ']', '...', 12), bm25(chunks) "
-            "FROM chunks WHERE chunks MATCH ? ORDER BY bm25(chunks) LIMIT ?",
-            (match, min(limit, 50)),
-        ).fetchall()
-    return [{"file": r[0], "snippet": r[1], "score": -r[2]} for r in rows]
+        rows = c.execute(sql, args).fetchall()
+    out, seen = [], set()
+    for path, snip, score in rows:
+        if path in seen:
+            continue
+        seen.add(path)
+        out.append({"file": path, "snippet": snip, "score": -score})
+        if len(out) == limit:
+            break
+    return out
 
 
 @app.get("/status", dependencies=auth)
