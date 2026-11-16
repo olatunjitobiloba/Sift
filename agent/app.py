@@ -211,6 +211,7 @@ def do_scan():
                     c.execute("INSERT INTO chunks VALUES (?, ?)", (str(fp), part))
                 c.execute("INSERT OR REPLACE INTO files VALUES (?, ?)", (str(fp), h))
                 SCAN["indexed"] += 1
+                c.commit()
 
             keep = {str(f) for f in files}
             for (p,) in c.execute("SELECT path FROM files").fetchall():
@@ -218,6 +219,14 @@ def do_scan():
                     c.execute("DELETE FROM chunks WHERE path=?", (p,))
                     c.execute("DELETE FROM files WHERE path=?", (p,))
                     SCAN["removed"] += 1
+
+            roots = [r[0] + os.sep for r in c.execute("SELECT path FROM folders")]
+            for (p,) in c.execute("SELECT path FROM files").fetchall():
+                if not any(p.startswith(r) for r in roots):
+                    c.execute("DELETE FROM chunks WHERE path=?", (p,))
+                    c.execute("DELETE FROM files WHERE path=?", (p,))
+                    SCAN["removed"] += 1
+            c.commit()
     finally:
         SCAN["running"] = False
 
