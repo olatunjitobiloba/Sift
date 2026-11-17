@@ -30,7 +30,7 @@ Three tangible actions a user can perform in the first working version:
 ---
 
 ### Box 4: What We Will Reuse
-- **Local Engine & AI**: Python / Java sidecar, `faster-whisper` (int8 quantized local transcription), `sentence-transformers` (`all-MiniLM-L6-v2` local embeddings), SQLite (FTS5 full-text search + vector extension).
-- **Backend Service & Relay**: Node.js / Express (or Java REST API), PostgreSQL (user and device metadata only), Redis (command relay with short TTL).
-- **Client Interfaces**: React (Web client & local dashboard), React Native with Expo (mobile client).
+- **Local Engine & AI**: Python sidecar (FastAPI), `faster-whisper` (int8 quantized local transcription), `sentence-transformers` (`all-MiniLM-L6-v2` local embeddings), SQLite (FTS5 full-text search + vector extension) [Approved by Lecturer].
+- **Backend Service & Relay**: Node.js / Express REST API, PostgreSQL (user and device metadata only), Redis (command relay with short TTL) [Approved by Lecturer].
+- **Client Interfaces**: React (Web client & local dashboard), React Native with Expo (mobile client) [Approved by Lecturer].
 - **Analytics & Verification**: Python, Pandas, Jupyter Notebook (retrieval evaluation on golden test set), GitHub Actions (CI/CD pipeline, automated linting, test passes).
