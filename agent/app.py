@@ -195,6 +195,8 @@ def do_scan():
                         files.append(fp)
             SCAN.update(total=len(files), done=0, indexed=0, unchanged=0, failed=0, removed=0)
             for fp in files:
+                if is_paused(c):
+                    break
                 SCAN["done"] += 1
                 try:
                     text = extract(fp)

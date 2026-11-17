@@ -57,6 +57,20 @@ def test_pause_blocks_scan():
     client.post("/resume", headers=H)
 
 
+def test_pause_mid_scan_halts():
+    d = tempfile.mkdtemp()
+    for i in range(20):
+        with open(os.path.join(d, f"note_{i}.txt"), "w", encoding="utf-8") as f:
+            f.write(f"Sample note content {i} for pause test\n" * 50)
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H)
+    client.post("/pause", headers=H)
+    wait_scan()
+    status = client.get("/scan/status", headers=H).json()
+    assert not status["running"]
+    client.post("/resume", headers=H)
+
+
 def test_delete_index_empties_search():
     client.delete("/index", headers=H)
     assert client.get("/search", params={"q": "deadlock"}, headers=H).json() == []
