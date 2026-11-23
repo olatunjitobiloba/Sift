@@ -54,6 +54,8 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
 ## 4. Repository Structure & Key Deliverables
 - [`PLAN.md`](./PLAN.md) — CPE434 Week 2 Build Plan (Product, Incremental Process, Week 7 Increment, Tech Stack).
 - [`SCRUM.md`](./SCRUM.md) — CPE434 Week 3 Scrum Charter (Sprint rhythm, WIP limits, Definition of Done).
+- [`PROPOSAL.md`](./PROPOSAL.md) — CPE434 Week 4 Project Proposal (Problem definition, student interviews, archetypes, initial backlog, roles).
+- [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md) — System Requirements Specification (Functional FR1–FR15, ISO/IEC 25010 NFR1–NFR5, User Story cards).
 - [`TEAM.md`](./TEAM.md) — Team collaboration log and individual branch verification.
 
 ---
