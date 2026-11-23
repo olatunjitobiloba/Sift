@@ -1,9 +1,18 @@
 # Sift Evaluation Benchmark Baseline
 
-**Date:** 2026-11-23  
 **Dataset:** 15 Covenant University Engineering lecture notes (`sample_lecture_notes/`, 63 chunks)  
 **Queries:** 15 student revision memory queries (`eval/queries.json`)  
-**Method:** SQLite FTS5 Full-Text Search with BM25 Ranking  
+
+---
+
+## Milestone Progress Track
+
+| Milestone / Sprint | Date | Search Mode Evaluated | Recall@5 | MRR | Latency / Throughput | Status |
+|---|:---:|---|:---:|:---:|:---:|:---:|
+| **Sprint 1 Baseline** | 2026-11-23 | Keyword FTS5 BM25 (lenient OR) | **1.00** | **0.89** | 4.2 ms total | Baseline Established |
+| **Sprint 2 Spike** | 2026-11-23 | Semantic (`all-MiniLM-L6-v2`) | **1.00** | **0.97** | 19.3 chunks/s | Verified Improvement |
+| **Sprint 2 Spike** | 2026-11-23 | Hybrid (RRF, $k=60$) | **1.00** | **0.97** | ~16 ms per query | Recommended Target |
+| **Week 10 Increment** | 2026-11-23 | Agent `/search?mode=meaning` & `mode=hybrid` | **1.00** | **0.97** | Lazy-loaded on CPU | **Shipped in `agent/app.py`** |
 
 ---
 
@@ -36,4 +45,4 @@
 | "ten minute daily team standup to remove project roadblocks" | `CPE434_Software_Engineering_Agile.md` | Rank 1 | Hit |
 
 ### Known Limitations
-- When student memory queries use descriptive conceptual terms rather than technical jargon, keyword BM25 drops in rank precision (e.g. diode barrier potential dropped to Rank 3, pullup resistors dropped to Rank 2, Phong reflection dropped to Rank 2).
+- When student memory queries use descriptive conceptual terms rather than technical jargon, keyword BM25 drops in rank precision (e.g. diode barrier potential dropped to Rank 3, pullup resistors dropped to Rank 2, Phong reflection dropped to Rank 2). Embeddings and Hybrid search resolve this limitation by lifting MRR from 0.89 to 0.97.

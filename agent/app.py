@@ -251,7 +251,18 @@ def scan_status():
 
 
 @app.get("/search", dependencies=auth)
-def search(q: str, limit: int = 10, ext: str = "", folder: str = ""):
+def search(q: str, limit: int = 10, ext: str = "", folder: str = "", mode: str = "keyword"):
+    if mode in ("meaning", "semantic", "hybrid"):
+        from semantic import rank_chunks, rank_hybrid
+        with db() as c:
+            rows = c.execute("SELECT path, text FROM chunks").fetchall()
+        if mode == "hybrid":
+            results = rank_hybrid(rows, q, min(limit, 50))
+        else:
+            results = rank_chunks(rows, q, min(limit, 50))
+        return [{"file": p, "snippet": t[:160], "score": round(s, 4)}
+                for p, t, s in results]
+
     # quote each word so user text cannot break FTS5 syntax
     terms = [t.replace('"', "") for t in q.split() if t.strip('"')]
     if not terms:

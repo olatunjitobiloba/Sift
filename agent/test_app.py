@@ -161,3 +161,46 @@ def test_ext_filter():
     hits = client.get("/search", params={"q": "platypus", "ext": "md"}, headers=H).json()
     assert len(hits) == 1 and hits[0]["file"].endswith(".md")
 
+
+def test_default_mode_is_keyword():
+    d = tempfile.mkdtemp()
+    with open(os.path.join(d, "k.txt"), "w", encoding="utf-8") as f:
+        f.write("narwhal tusks")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H)
+    wait_scan()
+    a = client.get("/search", params={"q": "narwhal"}, headers=H).json()
+    b = client.get("/search", params={"q": "narwhal", "mode": "keyword"}, headers=H).json()
+    assert a == b and len(a) == 1
+
+
+def test_meaning_and_hybrid_modes():
+    pytest = __import__("pytest")
+    pytest.importorskip("sentence_transformers")
+    d = tempfile.mkdtemp()
+    with open(os.path.join(d, "marsupial.txt"), "w", encoding="utf-8") as f:
+        f.write("The quokka is a small Australian creature known for smiling.")
+    client.post("/folders", json={"path": d}, headers=H)
+    client.post("/scan", headers=H)
+    wait_scan()
+
+    # Meaning mode matches conceptual query
+    res_m = client.get(
+        "/search",
+        params={"q": "smiling Australian animal", "mode": "meaning"},
+        headers=H,
+    ).json()
+    assert len(res_m) >= 1
+    assert "marsupial.txt" in res_m[0]["file"]
+    assert "score" in res_m[0]
+
+    # Hybrid mode also matches
+    res_h = client.get(
+        "/search",
+        params={"q": "smiling Australian animal", "mode": "hybrid"},
+        headers=H,
+    ).json()
+    assert len(res_h) >= 1
+    assert "marsupial.txt" in res_h[0]["file"]
+
+
