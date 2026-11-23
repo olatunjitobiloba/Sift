@@ -36,6 +36,11 @@ def test_token_required():
     assert client.get("/status", headers={"X-Sift-Token": "wrong"}).status_code == 401
 
 
+def test_no_token_is_401():
+    r = client.get("/search", params={"q": "x"})
+    assert r.status_code == 401
+
+
 def test_index_and_search():
     d = make_folder()
     client.post("/folders", json={"path": d}, headers=H)

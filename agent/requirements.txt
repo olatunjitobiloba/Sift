@@ -1,5 +1,3 @@
 fastapi
 uvicorn
 pypdf
-pytest
-httpx

@@ -56,6 +56,8 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
 - [`SCRUM.md`](./SCRUM.md) — CPE434 Week 3 Scrum Charter (Sprint rhythm, WIP limits, Definition of Done).
 - [`PROPOSAL.md`](./PROPOSAL.md) — CPE434 Week 4 Project Proposal (Problem definition, student interviews, archetypes, initial backlog, roles).
 - [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md) — System Requirements Specification (Functional FR1–FR15, ISO/IEC 25010 NFR1–NFR5, User Story cards).
+- [`docs/DECISIONS.md`](./docs/DECISIONS.md) — Architecture Decision Records (ADR 001: Local Agent Core Language).
+- [`docs/CI.md`](./docs/CI.md) — Continuous Integration & Gatekeeping Specification (GitHub Actions workflow, branch protection).
 - [`TEAM.md`](./TEAM.md) — Team collaboration log and individual branch verification.
 
 ---
