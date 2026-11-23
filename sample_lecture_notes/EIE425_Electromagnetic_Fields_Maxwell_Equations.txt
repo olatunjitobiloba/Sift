@@ -1,0 +1,18 @@
+# EIE 425: Applied Electromagnetic Field Theory
+## Topic: Maxwell's Equations and Plane Wave Propagation
+
+Maxwell's equations unify electric and magnetic phenomena in differential form:
+
+1. Gauss's Law for Electrostatics:
+   del . D = rho_v  (Electric displacement field divergence equals volume free charge density)
+2. Gauss's Law for Magnetism:
+   del . B = 0  (No isolated magnetic monopoles exist; magnetic flux lines are continuous closed loops)
+3. Faraday's Law of Electromagnetic Induction:
+   del x E = - partial(B) / partial(t)  (Time-varying magnetic field induces a circulating electric field)
+4. Ampere-Maxwell Circuital Law:
+   del x H = J + partial(D) / partial(t)  (Conduction current J and displacement current partial(D)/partial(t) generate magnetic field)
+
+Electromagnetic Wave Equation:
+Taking the curl of Faraday's law in a lossless, source-free dielectric medium yields the vector wave equation:
+del^2 E - mu * epsilon * partial^2(E) / partial(t^2) = 0
+where wave propagation velocity is c = 1 / sqrt(mu_0 * epsilon_0) in free space.

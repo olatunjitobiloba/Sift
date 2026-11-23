@@ -1,0 +1,15 @@
+# CPE 421: Operating Systems & Systems Programming
+## Topic: Deadlock Characterization and Handling
+
+A deadlock is a situation where a set of processes are blocked because each process is holding a resource and waiting for another resource acquired by some other process in the set.
+
+Four Coffman Conditions (Must hold simultaneously for deadlock to occur):
+1. Mutual Exclusion: At least one resource must be held in a non-shareable mode.
+2. Hold and Wait: A process must be holding at least one resource and waiting to acquire additional resources held by other processes.
+3. No Preemption: Resources cannot be preempted; a resource can be released only voluntarily by the process holding it after task completion.
+4. Circular Wait: A closed chain of processes exists such that each process holds at least one resource needed by the next process in the chain.
+
+Handling Strategies:
+- Deadlock Prevention: Invalidate at least one of the four necessary conditions.
+- Deadlock Avoidance: Use algorithms like Dijkstra's Banker's Algorithm to verify system state remains in a safe state before granting resource requests.
+- Detection and Recovery: Maintain a Resource Allocation Graph (RAG) and invoke cycle-detection algorithms periodically.

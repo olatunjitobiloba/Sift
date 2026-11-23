@@ -1,0 +1,14 @@
+# CPE 412: Computer Communication Networks
+## Topic: Transport Layer Protocols and Connection Management
+
+The Transmission Control Protocol (TCP) provides reliable, ordered, and error-checked delivery of a stream of octets between applications running on hosts communicating via an IP network.
+
+Connection Establishment:
+TCP uses a three-way handshake before data transfer begins:
+1. SYN: The initiating client sends a segment with SYN flag set and an initial sequence number (ISN_client).
+2. SYN-ACK: The receiving server acknowledges by sending a segment with SYN and ACK flags set, acknowledging ISN_client + 1 and providing its own ISN_server.
+3. ACK: The client sends an ACK segment confirming ISN_server + 1. The socket connection is now in the ESTABLISHED state.
+
+Flow Control and Congestion Control:
+- Flow control prevents sender from overwhelming receiver buffer using the sliding window mechanism (advertised receive window `rwnd`).
+- Congestion control prevents network collapse using slow start, congestion avoidance (AIMD: Additive Increase Multiplicative Decrease), fast retransmit, and fast recovery algorithms.

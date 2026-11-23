@@ -1,0 +1,15 @@
+# CPE 414: Database Systems Design & Implementation
+## Topic: Relational Database Normalization
+
+Database normalization organizes schema attributes to minimize data redundancy and avoid insertion, update, and deletion anomalies.
+
+Normal Form Hierarchy:
+1. First Normal Form (1NF): All attributes contain atomic, indivisible values; no repeating groups or nested relations.
+2. Second Normal Form (2NF): Relation is in 1NF and every non-prime attribute is fully functionally dependent on the entire primary key (no partial dependencies on a composite candidate key).
+3. Third Normal Form (3NF): Relation is in 2NF and no non-prime attribute is transitively dependent on the primary key (X -> Y and Y -> Z where Y is not a superkey).
+4. Boyce-Codd Normal Form (BCNF): For every non-trivial functional dependency X -> Y, determinant X must be a superkey.
+
+Decomposition Guidelines:
+Any decomposition must guarantee:
+- Lossless-join property: Natural join of decomposed tables reconstructs the original relation without spurious tuples.
+- Dependency preservation: All functional dependencies of the original schema are represented in the decomposed schemas.

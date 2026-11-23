@@ -1,0 +1,17 @@
+# CPE 422: Embedded Microcontroller Interfacing & RTOS
+## Topic: Synchronous and Asynchronous Serial Communication Protocols
+
+Embedded sensor integration relies on dedicated serial peripheral protocols:
+
+1. UART (Universal Asynchronous Receiver-Transmitter):
+   - Asynchronous point-to-point connection using TX and RX lines without a shared clock.
+   - Requires matched baud rates (e.g. 9600, 115200 bps), start bits, parity bit, and stop bits.
+
+2. I2C (Inter-Integrated Circuit):
+   - Synchronous, multi-master, multi-slave 2-wire serial bus: Serial Data (SDA) and Serial Clock (SCL).
+   - Open-drain lines requiring external pull-up resistors to VCC (typically 4.7 kOhm).
+   - 7-bit or 10-bit device addressing with ACK/NACK handshake on the 9th clock pulse.
+
+3. SPI (Serial Peripheral Interface):
+   - Synchronous, full-duplex, 4-wire interface: MOSI, MISO, SCK, and active-low CS/SS (Chip Select).
+   - Significantly higher data throughput (up to 50+ MHz) compared to I2C, but requires a separate CS pin per slave device.

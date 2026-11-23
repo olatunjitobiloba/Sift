@@ -1,0 +1,15 @@
+# CPE 436: Information & Network Security
+## Topic: Asymmetric Cryptography and Public-Key Infrastructure
+
+Modern data confidentiality and identity authentication combine symmetric encryption and asymmetric cryptography:
+
+Symmetric vs. Asymmetric:
+- Symmetric (e.g. AES-256-GCM): Uses identical secret key for encryption and decryption; high throughput for bulk data; requires secure key exchange.
+- Asymmetric (Public-Key, e.g. RSA-4096, ECC secp256k1): Uses mathematically linked key pairs: a public key distributed freely to encrypt or verify signatures, and a private key kept strictly secret to decrypt or sign documents.
+
+RSA Public-Key Algorithm:
+1. Select two large distinct prime numbers p and q.
+2. Compute modulus n = p * q and Euler totient phi(n) = (p - 1) * (q - 1).
+3. Choose public exponent e such that gcd(e, phi(n)) = 1 and 1 < e < phi(n).
+4. Compute private key d = e^(-1) mod phi(n) using Extended Euclidean Algorithm.
+5. Ciphertext c = m^e mod n; Decrypted plaintext m = c^d mod n. Security relies on the intractability of the prime integer factorization problem.

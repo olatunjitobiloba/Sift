@@ -1,0 +1,14 @@
+# CPE 411: Microprocessor Systems & Architecture
+## Topic: Pipelining and Hazard Resolution
+
+Pipelining is an implementation technique where multiple instructions are overlapped in execution. The classic RISC integer pipeline consists of five stages:
+1. Instruction Fetch (IF)
+2. Instruction Decode and Register Read (ID)
+3. Execution / Address Calculation (EX)
+4. Memory Access (MEM)
+5. Write Back (WB)
+
+Pipeline Hazards:
+- Structural Hazards: Hardware cannot support the combination of instructions in the same clock cycle.
+- Data Hazards: Instruction depends on the result of an earlier instruction still in the pipeline. Resolved using operand forwarding (bypassing) from EX/MEM or MEM/WB pipeline registers directly to the ALU inputs, or inserting pipeline interlocks (stalls) for load-use data dependencies.
+- Control Hazards: Arise from branch and jump instructions. Mitigated using branch prediction (static and dynamic 2-bit saturating counters) and delayed branch slots.

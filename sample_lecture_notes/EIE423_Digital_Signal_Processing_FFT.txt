@@ -1,0 +1,12 @@
+# EIE 423: Digital Signal Processing
+## Topic: Fast Fourier Transform (FFT) Algorithms
+
+The Discrete Fourier Transform (DFT) converts a finite sequence of equally-spaced samples of a discrete-time signal into complex frequency components. For an N-point sequence, direct computation of the DFT requires N^2 complex multiplications and N(N-1) complex additions.
+
+Radix-2 Cooley-Tukey Decimation-in-Time (DIT) FFT:
+By decomposing an N-point DFT into two N/2-point DFTs (one for even-indexed samples and one for odd-indexed samples), computational complexity reduces to O(N log2 N).
+
+Key Concepts:
+- Twiddle Factors: Complex roots of unity W_N^k = exp(-j * 2 * pi * k / N).
+- Butterfly Operations: The fundamental calculation unit combining pairs of intermediate values with symmetry properties W_N^(k + N/2) = -W_N^k.
+- Bit-Reversal Permutation: Input data array is rearranged in bit-reversed index order prior to stage-by-stage butterfly execution.
