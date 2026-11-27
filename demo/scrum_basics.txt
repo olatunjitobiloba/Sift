@@ -1,0 +1,8 @@
+# Software Engineering: Scrum Backlog and WIP Limits
+
+Scrum organizes software delivery into short iterative sprints backed by a transparent product backlog.
+
+Key Sprint Controls:
+- Product Goal: Long-term target guiding backlog prioritization.
+- Work In Progress (WIP) Limit: Caps simultaneous tasks (for example, 5 cards max in To do) so team members finish open work before starting new cards.
+- Definition of Done: Shared checklist requiring passing automated tests, peer review, and updated documentation before closing a card.

@@ -37,11 +37,11 @@ All non-functional requirements are categorized according to **ISO/IEC 25010** s
 
 | ID | ISO/IEC 25010 Quality Sub-characteristic | Requirement Statement | Verification Method & Acceptance Metric |
 |---|---|---|---|
-| **NFR1** | **Performance Efficiency** (Time Behaviour) | Search query execution returns in under 2.0 seconds on an indexed test corpus of 1,000 files. | Automated benchmark timing 20 queries across varied lengths via `eval/run_eval.py`. |
-| **NFR2** | **Security** (Authenticity & Access Control) | Every incoming HTTP request to the local agent without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 Unauthorized. | Automated unit test suite (`pytest agent/test_app.py::test_auth`). |
-| **NFR3** | **Reliability** (Fault Tolerance & Integrity) | Pausing a running scan stops between file boundaries, leaves the SQLite index uncorrupted, and keeps existing entries immediately searchable. | Automated integration test (`pytest agent/test_app.py::test_pause_mid_scan`). |
-| **NFR4** | **Usability** (Learnability & Operability) | A newly onboarded student can add a folder and execute their first search without external assistance in under 3 minutes. | Timed usability trial with 3 Covenant University students; mean completion time $\le$ 180s. |
-| **NFR5** | **Security** (Confidentiality & Privacy Boundary) | The local search agent binds strictly to `127.0.0.1`, and zero document content, raw text, or audio leaves the host laptop by default. | Network socket audit (`netstat -ano`) and outbound packet inspection confirming loopback only. |
+| **NFR1** | **Performance Efficiency** (Time Behaviour) | Target: search query execution returns in under 2.0 seconds on a 1,000-file test folder (not yet tested at 1,000 files). | Measure query latency across 15+ queries via `eval/` timing scripts. |
+| **NFR2** | **Security** (Authenticity & Access Control) | Every incoming HTTP request to the local agent without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 Unauthorized. | Automated unit test suite (`pytest agent/test_app.py::test_no_token_is_401`). |
+| **NFR3** | **Reliability** (Fault Tolerance & Integrity) | Pausing a running scan stops between file boundaries, leaves the SQLite index uncorrupted, and keeps existing entries immediately searchable. | Automated integration test (`pytest agent/test_app.py`). |
+| **NFR4** | **Usability** (Learnability & Operability) | Target: a newly onboarded student adds a folder and executes their first search without external assistance in under 3 minutes. | Timed usability trial with 3 students; mean completion time <= 180s (pending measurement). |
+| **NFR5** | **Security** (Local Processing Boundary) | The local search agent binds strictly to `127.0.0.1`, and file text stays on the host laptop by default (note: local SQLite index is unencrypted). | Check `--host 127.0.0.1` binding and offline demo rehearsal (Wi-Fi off). |
 
 ---
 
@@ -100,7 +100,8 @@ Organized under the 3 core themes: **Pick**, **Find**, and **Control**. Acceptan
 1. **Happy:** Given the agent is running, when I open "Pair phone", then a one-time code appears.
 2. **Edge:** Given I enter a wrong or expired code, when I submit, then pairing is refused and no device is added.
 
-#### Story 4.2 (Issue #8): Human-in-the-Loop File Organization ([#11](https://github.com/olatunjitobiloba/Sift/issues/11))
+#### Story 4.2 (Issue #8 — Backlog): Human-in-the-Loop File Organization ([#11](https://github.com/olatunjitobiloba/Sift/issues/11))
+> *Status: **Backlog** (Deferred from Sprint 2 and Week 13 demo scope).*
 > *As a student, I want Sift to suggest where a file belongs and let me approve it, so that my folders get tidy without surprises.*
 1. **Happy:** Given a suggestion exists, when I click Approve, then only that file moves, and I can undo it.
 2. **Edge:** Given I do not approve, when time passes, then no file is moved.

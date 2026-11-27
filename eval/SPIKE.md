@@ -14,9 +14,9 @@
 | Search Method | Retrieval Mechanism | Recall@5 | MRR (Mean Reciprocal Rank) | Rank 1 Exact Hits | Notes |
 |---|---|:---:|:---:|:---:|---|
 | **Keyword (Strict AND)** | SQLite FTS5 BM25 (`"term1" "term2"`) | **0.00** | **0.00** | 0 / 15 (0%) | Current agent behavior: all terms required; natural memory queries miss due to missing words. |
-| **Keyword (Lenient OR)** | SQLite FTS5 BM25 (`"term1" OR "term2"`) | **1.00** | **0.89** | 11 / 15 (73.3%) | Matches shared vocabulary, but precision degrades on descriptive conceptual queries. |
-| **Embedding (Semantic)** | `all-MiniLM-L6-v2` Cosine Similarity | **1.00** | **0.97** | **14 / 15 (93.3%)** | Correctly maps conceptual descriptions to technical lecture notes. |
-| **Hybrid (RRF, $k=60$)** | Keyword + Embedding Fusion | **1.00** | **0.97** | **14 / 15 (93.3%)** | Combines lexical exactness with semantic understanding. |
+| **Keyword (Lenient OR)** | SQLite FTS5 BM25 (`"term1" OR "term2"`) | **1.00** | **0.89** | 11 / 15 (73.3%) | Measured 0.23 ms/query; matches vocabulary overlap but precision drops on descriptive phrases. |
+| **Embedding (Semantic)** | `all-MiniLM-L6-v2` Cosine Similarity | **1.00** | **0.97** | **14 / 15 (93.3%)** | Measured 412.8 ms/query (warm query encode) + 5.32 s corpus encode on CPU. |
+| **Hybrid (RRF, $k=60$)** | Keyword + Embedding Fusion | **1.00** | **0.97** | **14 / 15 (93.3%)** | Combines lexical exactness with semantic understanding (~413 ms warm query CPU). |
 
 ---
 
@@ -58,14 +58,16 @@ Hybrid search with Reciprocal Rank Fusion ($k=60$) resolves the fatal flaw of ke
 
 ---
 
-## 4. Performance & Resource Characteristics
+## 4. Measured Performance & Caveats
 
-- **Embedding Throughput**: 63 chunks embedded in **3.30s (19.1 chunks/sec)** on laptop CPU (Intel/AMD x86_64, batch size 32).
-- **Query Latency**:
-  - Keyword FTS5: < 1 ms
-  - Embedding encoding: ~15 ms per query
-  - RRF fusion: < 0.1 ms
-  - **Total Hybrid Search Latency: ~16 ms** (Passes ISO 25010 NFR1 target of < 2,000 ms by two orders of magnitude).
+- **Corpus Embedding Time:** 63 chunks embedded in **3.27–5.32 s** on laptop CPU (`all-MiniLM-L6-v2`, batch size 32).
+- **Measured Query Latency (15 queries, 63 chunks):**
+  - Keyword FTS5 (lenient OR): **3.49 ms total (0.23 ms/query)**
+  - Warm Semantic Query Encoding (`model.encode` + dot product): **6,191.65 ms total (412.78 ms/query)** on laptop CPU.
+  - Note: In the Week 10 experimental `/search?mode=meaning` endpoint, all chunks are currently re-encoded on each query; indexing embeddings to SQLite at scan time is required to scale beyond small folders.
+- **Caveats & Unmeasured Targets:**
+  - The 15-note eval set is small and team-authored, so Recall@5 and MRR are rough directional guides.
+  - `NFR1` (`< 2.0 s` on 1,000 files) remains a target and has not been benchmarked at 1,000 files.
 - **Disk Overhead**: `all-MiniLM-L6-v2` model weights require ~90 MB on disk (cached once under `~/.cache/huggingface/hub`). Vector indices require 1.5 KB per paragraph chunk (384 float32 values).
 
 ---

@@ -72,16 +72,16 @@ All user stories are maintained on GitHub Project Board #2 with INVEST-compliant
 | **3.1** | As a student, I want to pause indexing, so that Sift stops reading files when I choose | Card 3: Control | FR12 | [#10](https://github.com/olatunjitobiloba/Sift/issues/10) |
 | **3.2** | As a student, I want to see and delete my index, so that I stay in control of my data | Card 3: Control | FR13 | [#14](https://github.com/olatunjitobiloba/Sift/issues/14) |
 | **4.1** | As a student, I want to pair my phone with my laptop, so that I can search my notes away from my desk | Card 3: Control | FR14 | [#15](https://github.com/olatunjitobiloba/Sift/issues/15) |
-| **4.2** | As a student, I want Sift to suggest where a file belongs and let me approve it, so that my folders get tidy without surprises | Card 3: Control | FR15 | [#11](https://github.com/olatunjitobiloba/Sift/issues/11) |
+| **4.2** | As a student, I want Sift to suggest where a file belongs and let me approve it, so that my folders get tidy without surprises *(Backlog — out of Sprint 2 / Demo scope)* | Card 3: Control | FR15 | [#11](https://github.com/olatunjitobiloba/Sift/issues/11) |
 
 *(Detailed acceptance criteria and functional specifications are cataloged in [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md)).*
 
 ### 3.3 Measurable Non-Functional Requirements (ISO/IEC 25010)
-1. **Performance Efficiency (Time Behaviour):** Search execution completes in under 2.0 seconds on an indexed test corpus of 1,000 files (`NFR1`, verified via `eval/run_eval.py`).
-2. **Security (Authenticity & Access Control):** Every local agent HTTP request without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 (`NFR2`, verified via `pytest agent/test_app.py::test_auth`).
-3. **Reliability (Fault Tolerance):** Pausing a running scan stops cleanly at file transaction boundaries, leaving the SQLite index uncorrupted and immediately searchable (`NFR3`, verified via `pytest agent/test_app.py::test_pause_mid_scan`).
-4. **Usability (Operability):** A newly onboarded student can add a folder and execute their first search without guidance in under 3 minutes (`NFR4`, verified via timed user trials).
-5. **Security (Confidentiality):** The local agent binds exclusively to `127.0.0.1`, guaranteeing zero default egress of document text or audio (`NFR5`, verified via socket auditing).
+1. **Performance Efficiency (Time Behaviour):** Target: search execution completes in under 2.0 seconds on a 1,000-file test corpus (`NFR1`, target — not yet benchmarked at 1,000 files; verified at sub-second speed on our 15-file set via `eval/run_eval.py`).
+2. **Security (Authenticity & Access Control):** Every local agent HTTP request without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 (`NFR2`, verified via `pytest agent/test_app.py::test_no_token_is_401`).
+3. **Reliability (Fault Tolerance):** Pausing a running scan stops cleanly at file transaction boundaries, leaving the SQLite index uncorrupted and immediately searchable (`NFR3`, verified via `pytest agent/test_app.py`).
+4. **Usability (Operability):** A newly onboarded student can add a folder and execute their first search without guidance in under 3 minutes (`NFR4`, target pending timed user trials).
+5. **Security (Confidentiality & Local Processing):** The local agent binds exclusively to `127.0.0.1`, so document text stays on the host laptop by default (`NFR5`, verified via socket binding; note that local `index.db` storage is not encrypted at rest).
 
 ---
 
