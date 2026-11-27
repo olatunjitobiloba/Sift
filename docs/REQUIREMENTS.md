@@ -37,7 +37,7 @@ All non-functional requirements are categorized according to **ISO/IEC 25010** s
 
 | ID | ISO/IEC 25010 Quality Sub-characteristic | Requirement Statement | Verification Method & Acceptance Metric |
 |---|---|---|---|
-| **NFR1** | **Performance Efficiency** (Time Behaviour) | Target: search query execution returns in under 2.0 seconds on a 1,000-file test folder (not yet tested at 1,000 files). | Measure query latency across 15+ queries via `eval/` timing scripts. |
+| **NFR1** | **Performance Efficiency** (Time Behaviour) | Search query execution returns in under 2.0 seconds on a 1,000-file test folder (keyword FTS5 measured `median 0.0230s`, `max 0.0606s` on 1,000 synthetic `.txt` files). | [`eval/time_search.py`](../eval/time_search.py) timing 20 queries (`n=20`, 2026-11-27; speed only). |
 | **NFR2** | **Security** (Authenticity & Access Control) | Every incoming HTTP request to the local agent without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 Unauthorized. | Automated unit test suite (`pytest agent/test_app.py::test_no_token_is_401`). |
 | **NFR3** | **Reliability** (Fault Tolerance & Integrity) | Pausing a running scan stops between file boundaries, leaves the SQLite index uncorrupted, and keeps existing entries immediately searchable. | Automated integration test (`pytest agent/test_app.py`). |
 | **NFR4** | **Usability** (Learnability & Operability) | Target: a newly onboarded student adds a folder and executes their first search without external assistance in under 3 minutes. | Timed usability trial with 3 students; mean completion time <= 180s (pending measurement). |

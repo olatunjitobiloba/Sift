@@ -77,7 +77,7 @@ All user stories are maintained on GitHub Project Board #2 with INVEST-compliant
 *(Detailed acceptance criteria and functional specifications are cataloged in [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md)).*
 
 ### 3.3 Measurable Non-Functional Requirements (ISO/IEC 25010)
-1. **Performance Efficiency (Time Behaviour):** Target: search execution completes in under 2.0 seconds on a 1,000-file test corpus (`NFR1`, target — not yet benchmarked at 1,000 files; verified at sub-second speed on our 15-file set via `eval/run_eval.py`).
+1. **Performance Efficiency (Time Behaviour):** Search execution completes in under 2.0 seconds on a 1,000-file test corpus (`NFR1`; measured keyword HTTP search via `eval/time_search.py` on 1,000 synthetic `.txt` files: **median `0.0230s`**, **max `0.0606s`**; scan `10.24s`).
 2. **Security (Authenticity & Access Control):** Every local agent HTTP request without a valid timing-safe token in `X-Sift-Token` receives HTTP 401 (`NFR2`, verified via `pytest agent/test_app.py::test_no_token_is_401`).
 3. **Reliability (Fault Tolerance):** Pausing a running scan stops cleanly at file transaction boundaries, leaving the SQLite index uncorrupted and immediately searchable (`NFR3`, verified via `pytest agent/test_app.py`).
 4. **Usability (Operability):** A newly onboarded student can add a folder and execute their first search without guidance in under 3 minutes (`NFR4`, target pending timed user trials).

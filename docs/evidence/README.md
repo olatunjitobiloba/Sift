@@ -10,5 +10,5 @@ Store screenshots and proof artifacts here so every report claim and viva answer
 | **GitHub Branch Protection Settings** | Configured by Somto (`test` required + 1 review) | `branch-protection-main.png` |
 | **8 User Stories + Board WIP Counts (`<= 5` To Do)** | Live on [Project Board #2](https://github.com/users/olatunjitobiloba/projects/2) | `project-board-wip.png` |
 | **Dr. Comfort Lawal Written Stack Approval** | Pending written reply screenshot | `lecturer-java-approval.png` |
-| **Eval & Spike Numbers Table** | Verified in [`eval/BASELINE.md`](../../eval/BASELINE.md) & [`eval/SPIKE.md`](../../eval/SPIKE.md) | `eval-table.png` |
+| **Eval & 1,000-File Timing (`NFR1`)** | Verified in [`eval/BASELINE.md`](../../eval/BASELINE.md) & [`eval/SPIKE.md`](../../eval/SPIKE.md) | `eval-table.png` |
 | **Demo Walkthrough / Backup Screen Capture** | Pending Wi-Fi-off rehearsal + Philip's phone capture | `demo-backup-recording.mp4` |

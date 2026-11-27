@@ -13,6 +13,7 @@
 | **Sprint 2 Spike** | 2026-11-23 | Semantic (`all-MiniLM-L6-v2`) | **1.00** | **0.97** | 5.32 s index / 412.8 ms/q | Verified Improvement |
 | **Sprint 2 Spike** | 2026-11-23 | Hybrid (RRF, $k=60$) | **1.00** | **0.97** | ~413 ms/q (warm model) | Recommended Target |
 | **Week 10 Increment** | 2026-11-23 | Agent `/search?mode=meaning` & `mode=hybrid` | **1.00** | **0.97** | Experimental (re-embeds chunks) | **Shipped in `agent/app.py`** |
+| **Day 15 Scale Timing (NFR1)** | 2026-11-27 | Keyword FTS5 over HTTP (1,000 synthetic `.txt` files) | - | - | **median `0.0230s`, max `0.0606s`** | **Passed NFR1 (`< 2.0 s`)** |
 
 ---
 
@@ -22,7 +23,22 @@
 |---|:---:|:---:|---|
 | **Recall@5** | **1.00** (15/15) | $\ge$ 0.80 | Pass (15-query set) |
 | **MRR (Mean Reciprocal Rank)** | **0.89** | $\ge$ 0.70 | Pass (15-query set) |
-| **Measured Query Latency (15 queries, 63 chunks)** | **3.49 ms total (0.23 ms/query)** | Target `< 2 s` at 1,000 files (unmeasured) | Measured on 15 files only |
+| **Measured Query Latency (15 files, direct FTS5)** | **3.49 ms total (0.23 ms/query)** | - | Measured on 15 files |
+| **Measured 1,000-File Latency (`NFR1`, HTTP)** | **median `0.0230 s`, max `0.0606 s`** (`n=20`) | `< 2.0 s` | **Pass** (synthetic `.txt` speed test) |
+
+---
+
+## 1,000-File Scale Timing Benchmark (`NFR1`, 2026-11-27)
+
+Measured using [`eval/time_search.py`](./time_search.py) against a live local Sift agent instance (`http://127.0.0.1:8765`, `X-Sift-Token` auth, polling `/scan/status` until indexing finished cleanly):
+
+- **Date:** 2026-11-27
+- **Machine:** Windows 11 · 13th Gen Intel Core i7-13620H (10 cores / 16 logical processors) · 31.7 GB RAM
+- **Corpus:** 1,000 synthetic `.txt` files (1,000 chunks, ~1.2 KB each)
+- **Full Scan + Indexing Time:** **10.24 s** (1,000 individual WAL commits)
+- **Queries Executed:** 20 searches (`["deadlock", "scheduling", "threads", "processes", "note"] * 4`)
+- **Measured Latency:** `min = 0.0139 s`, **`median = 0.0230 s`**, **`max = 0.0606 s`**
+- **Caveat:** These files are synthetic and repetitive, so this benchmark measures **search and indexing speed only**, not retrieval quality or PDF/meaning-mode scale.
 
 ### Per-Query Breakdown (FTS5 BM25)
 

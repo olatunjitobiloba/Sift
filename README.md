@@ -60,6 +60,8 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
 - [`docs/CI.md`](./docs/CI.md) — Continuous Integration & Gatekeeping Specification (GitHub Actions workflow, branch protection).
 - [`TEAM.md`](./TEAM.md) — Team collaboration log and individual branch verification.
 - [`docs/DEMO.md`](./docs/DEMO.md) — 5-minute Week 13 demo script, Wi-Fi-off rehearsal checklist, and honest system limits.
+- [`docs/STATUS.md`](./docs/STATUS.md) — Honest pre-demo evidence & readiness status table.
+- [`docs/viva/README.md`](./docs/viva/README.md) & [`docs/evidence/README.md`](./docs/evidence/README.md) — Viva defense notes and evidence screenshots index.
 - [`demo/`](./demo) — Synthetic 8-file sample study folder and 5-query verification suite.
 
 ---
