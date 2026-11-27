@@ -2,6 +2,27 @@
 
 ---
 
+## ADR 002: Course Stack Approval (Sift Exempt from Java Requirement)
+
+**Date:** 2026-11-15 *(confirmed by lecturer)* · **Recorded:** 2026-11-27  
+**Status:** Accepted (Pending written screenshot in `docs/evidence/`)  
+**Approved By:** Dr. Comfort Lawal (CPE434 Lecturer) · **Recorded By:** Olatunji Oluwatobiloba  
+
+### Approval Record
+- **Date & Channel:** 2026-11-15 — *[Specify exact channel: in person / WhatsApp / email and attach screenshot in `docs/evidence/`]*.
+- **Reported Statement:** Relayed by Product Owner on 2026-11-15: *"As long as you use Expo mobile, Express API, and React, it's okay."*
+- **What Was Approved:**
+  1. **Web Frontend:** React (Vite / TypeScript) — approved.
+  2. **Mobile Companion:** React Native (Expo) — approved.
+  3. **Backend Relay API:** Express (Node.js) — approved.
+  4. **Java Project Requirement:** Java is **not required** for the Sift project codebase.
+
+### Scope Boundaries & Follow-Up Verification
+- **Local Desktop Agent Language (`Python`):** Dr. Lawal's phrasing explicitly named React, Expo, and Express. As recorded in ADR 001 below, the team keeps **Python** for the local search agent because `agent/app.py`, 20 automated tests, CI, and `sentence-transformers` are already implemented and verified. Send one quick written confirmation (`"Dr. Comfort, confirming Sift may use React, Expo, Express, and Python with no Java — is that right?"`) before Demo Day (4 Dec) so the viva panel sees Python covered alongside the JS stack.
+- **Weekly Lab Exercises (Java Swing):** Separate from the Sift project team deliverable; confirm explicitly with Dr. Lawal whether standalone weekly CPE434 labs still require Java Swing.
+
+---
+
 ## ADR 001: Local Agent Runtime & Language Selection (Python vs. Node.js)
 
 **Date:** 2026-11-23  
