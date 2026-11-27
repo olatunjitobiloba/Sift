@@ -31,7 +31,7 @@ Start the local agent from `agent/`:
 Show the terminal output and run a quick socket check in a second terminal to confirm it listens on `127.0.0.1` only (not `0.0.0.0`):
 ```powershell
 netstat -ano | findstr 8765
-curl http://127.0.0.1:8765/health
+curl http://127.0.0.1:8765/health   # expects {"ok":true,"service":"sift-agent"}
 ```
 Grab your token (`$TOKEN = Get-Content $HOME\.sift\token`) and show `GET /search` without the header returns `401 Unauthorized`.
 
@@ -70,16 +70,16 @@ Grab your token (`$TOKEN = Get-Content $HOME\.sift\token`) and show `GET /search
 
 ## 3. Wi-Fi-Off Failure Rehearsal Log
 
-Run the script twice with **Wi-Fi turned off** prior to Week 13 presentation:
-- **Pass 1 (Local Core — Wi-Fi Off):** Confirm `uvicorn app:app --host 127.0.0.1 --port 8765`, folder scan on `demo/`, keyword search, exclusion purge, pause/resume, and `DELETE /index` all succeed with zero internet access. *(Verified via offline localhost rehearsal script — see fresh-clone test results).*
-- **Pass 2 (Backup Plan — Wi-Fi Off / LAN Isolated):** If campus Wi-Fi blocks laptop-to-phone traffic for Step 6, switch immediately to the phone hotspot or play Philip's 30-second screen recording.
+Run the script twice with **Wi-Fi turned off** (or localhost-only isolation) prior to Week 13 presentation:
+- **Pass 1 (Local Core Rehearsal — Fresh Clone Verification):** Cloned `feature/agent-skeleton` into an isolated temporary folder (`sift-fresh`), installed `agent/requirements.txt` in a clean `.venv`, started `uvicorn` on `127.0.0.1:8766` (automatic fallback around an occupied port `8765`), confirmed `401` on missing token, indexed all 8 `demo/` files, verified all 5 queries in `demo/queries.json` hit Rank 1 (`Recall@5 = 1.00`, `MRR = 1.00`, measured **1,425.9 ms total** via `eval/run_eval.py` over localhost HTTP), verified `private_*` exclusion purged `private_budget.txt`, confirmed pause refused scan with `409` and resume recovered cleanly, and confirmed `DELETE /index` zeroed search hits while leaving files intact on disk (`19 passed, 1 skipped` in `pytest` without semantic weights, plus `smoke OK`).
+- **Pass 2 (Backup Plan — Wi-Fi Off / LAN Isolated):** Before Friday, run a second full walkthrough with desktop Wi-Fi toggled off and test Step 6 over a dedicated mobile hotspot (or keep Philip's 30-second screen recording queued in case campus Wi-Fi blocks peer-to-peer traffic).
 
 ---
 
 ## 4. Honest Limits (Mandatory Disclosure)
 
 1. **Small Team-Written Eval Set:** Our evaluation corpus (`15` notes in `sample_lecture_notes/` and `8` files in `demo/`) was authored by the team, so Recall@5 (`1.00`) and MRR (`0.89` lenient keyword / `0.97` meaning & hybrid) are rough directional guides, not generalized benchmarks.
-2. **Latency Is Measured at Small Scale Only:** The `< 2.0 s` figure in `NFR1` for 1,000 files is a **target**, not a measured 1,000-file benchmark. Only small-folder timings (8 demo files and 15 eval files) are measured so far.
+2. **Latency Is Measured at Small Scale Only:** The `< 2.0 s` figure in `NFR1` for 1,000 files is a **target**, not a measured 1,000-file benchmark. Measured latencies so far cover small corpora only: **3.49 ms total (0.23 ms/query)** for direct SQLite FTS5 keyword queries on 15 files (63 chunks), **1,425.9 ms total (~285 ms/query)** over localhost HTTP for the 5 `demo/` queries, and **412.8 ms/query** warm query encoding (+ **5.32 s** chunk encoding) for CPU semantic mode on 63 chunks.
 3. **Local Processing Is the Goal — Not "100% Private" or "Secure":** Files stay on the laptop in local keyword/embedding modes (`127.0.0.1` binding + token auth), but formal security penetration testing has not been performed.
 4. **Local Index Is Unencrypted:** The SQLite database (`~/.sift/index.db`) is stored on disk in plaintext SQLite format without at-rest encryption. Any user or process with local OS read permissions to `$HOME/.sift` can read indexed snippets.
 5. **Known Operational Gaps:** Experimental meaning mode ignores `ext`/`folder` filters, re-embeds at query time in the current prototype, and downloads ~90 MB of weights on the very first semantic query.
