@@ -97,6 +97,7 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
      ```
 
 3. **Start the local agent (loopback `127.0.0.1` only):**
+   Check first if another local process occupies port `8765` (`netstat -ano | findstr 8765` on Windows or `lsof -i :8765` on macOS/Linux). If `8765` is in use, pass `--port 8766` instead (`smoke.py` and `eval/run_eval.py` detect `service: "sift-agent"` and fall back automatically from `8765` to `8766`):
    - **Windows (PowerShell):**
      ```powershell
      .\.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8765
@@ -105,20 +106,19 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
      ```bash
      uvicorn app:app --host 127.0.0.1 --port 8765
      ```
-   *(If port `8765` is occupied on your machine, start with `--port 8766`; `smoke.py` falls back automatically from `8765` to `8766`.)*
 
 4. **Verify health & grab your local API token** (created automatically on first agent startup in `~/.sift/token`):
    - **Windows (PowerShell):**
      ```powershell
-     Invoke-RestMethod http://127.0.0.1:8765/health
+     Invoke-RestMethod http://127.0.0.1:8765/health   # expects {"ok": true, "service": "sift-agent"}
      Get-Content $HOME\.sift\token
      ```
    - **macOS / Linux:**
      ```bash
-     curl http://127.0.0.1:8765/health
+     curl http://127.0.0.1:8765/health   # expects {"ok":true,"service":"sift-agent"}
      cat ~/.sift/token
      ```
-   Pass that value in the `X-Sift-Token` HTTP header on all endpoints except `/health`.
+   Pass that value in the `X-Sift-Token` HTTP header on all endpoints except `/health`. (If you started on `8766`, replace `8765` with `8766`.)
 
 5. **Run Unit Tests & End-to-End Smoke Test** (installs lightweight `pytest` + `httpx`):
    ```bash

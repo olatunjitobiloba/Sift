@@ -111,7 +111,7 @@ def excluded(fp: Path, patterns):
 
 @app.get("/health")
 def health():
-    return {"ok": True}
+    return {"ok": True, "service": "sift-agent"}
 
 
 @app.get("/folders", dependencies=auth)
