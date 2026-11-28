@@ -1,0 +1,11 @@
+# Operating Systems: Deadlocks and Resource Allocation
+
+A deadlock occurs when two or more processes block indefinitely because each process holds a resource while waiting to acquire another resource held by another blocked process.
+
+Four necessary Coffman conditions for deadlock:
+1. Mutual Exclusion: At least one resource is held in a non-shareable mode.
+2. Hold and Wait: A process holds at least one resource and waits for others.
+3. No Preemption: Resources cannot be forcibly taken away; they must be released voluntarily.
+4. Circular Wait: Processes form a closed chain where each waits for the next.
+
+Banker's Algorithm prevents unsafe allocations by simulating whether a safe execution sequence still exists before granting a request.

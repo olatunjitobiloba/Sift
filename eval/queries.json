@@ -1,0 +1,77 @@
+[
+  {
+    "q": "tasks frozen in infinite sleep waiting for locks",
+    "file": "CPE421_Operating_Systems_Deadlocks.txt",
+    "expected": "CPE421_Operating_Systems_Deadlocks.txt"
+  },
+  {
+    "q": "eliminating duplicate columns across entities in relational storage",
+    "file": "CPE414_Database_Management_Normalization.txt",
+    "expected": "CPE414_Database_Management_Normalization.txt"
+  },
+  {
+    "q": "preventing CPU execution delays between consecutive instructions",
+    "file": "CPE411_Microprocessor_Instruction_Pipelining.txt",
+    "expected": "CPE411_Microprocessor_Instruction_Pipelining.txt"
+  },
+  {
+    "q": "how a diode stops electric current until threshold voltage is reached",
+    "file": "PHY121_Semiconductor_Physics.txt",
+    "expected": "PHY121_Semiconductor_Physics.txt"
+  },
+  {
+    "q": "turning a complex linear circuit into a single battery and resistor",
+    "file": "EIE411_Thevenin_Theorem.txt",
+    "expected": "EIE411_Thevenin_Theorem.txt"
+  },
+  {
+    "q": "preventing sender from overwhelming the destination buffer",
+    "file": "CPE412_Computer_Networks_OSI_TCP.txt",
+    "expected": "CPE412_Computer_Networks_OSI_TCP.txt"
+  },
+  {
+    "q": "rapid spectral frequency decomposition from time samples",
+    "file": "EIE423_Digital_Signal_Processing_FFT.txt",
+    "expected": "EIE423_Digital_Signal_Processing_FFT.txt"
+  },
+  {
+    "q": "tuning feedback controller loops using critical oscillation period",
+    "file": "EIE413_Control_Systems_PID_Tuning.txt",
+    "expected": "EIE413_Control_Systems_PID_Tuning.txt"
+  },
+  {
+    "q": "constructing hierarchical trees from lexical tokens using grammar rules",
+    "file": "CPE432_Compiler_Construction_Syntax_Analysis.txt",
+    "expected": "CPE432_Compiler_Construction_Syntax_Analysis.txt"
+  },
+  {
+    "q": "microcontroller bus using two wires with pullup resistors",
+    "file": "CPE422_Embedded_Systems_Interfacing.txt",
+    "expected": "CPE422_Embedded_Systems_Interfacing.txt"
+  },
+  {
+    "q": "equations relating electric displacement and circulating magnetic induction",
+    "file": "EIE425_Electromagnetic_Fields_Maxwell_Equations.txt",
+    "expected": "EIE425_Electromagnetic_Fields_Maxwell_Equations.txt"
+  },
+  {
+    "q": "ciphers based on the difficulty of factoring very large prime numbers",
+    "file": "CPE436_Information_Security_Cryptography.txt",
+    "expected": "CPE436_Information_Security_Cryptography.txt"
+  },
+  {
+    "q": "numerical convergence methods for bus voltages in electrical networks",
+    "file": "EIE415_Power_Systems_Load_Flow_Analysis.txt",
+    "expected": "EIE415_Power_Systems_Load_Flow_Analysis.txt"
+  },
+  {
+    "q": "simulating shiny glossy reflections using viewing angles and light vectors",
+    "file": "CPE424_Computer_Graphics_Rendering_Pipeline.txt",
+    "expected": "CPE424_Computer_Graphics_Rendering_Pipeline.txt"
+  },
+  {
+    "q": "ten minute daily team standup to remove project roadblocks",
+    "file": "CPE434_Software_Engineering_Agile.md",
+    "expected": "CPE434_Software_Engineering_Agile.md"
+  }
+]

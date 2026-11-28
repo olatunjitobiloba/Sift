@@ -1,0 +1,16 @@
+# EIE 413: Feedback and Control Systems
+## Topic: PID Controller Architecture and Ziegler-Nichols Tuning
+
+The Proportional-Integral-Derivative (PID) controller is the workhorse of industrial feedback automation. The control signal u(t) in the time domain is given by:
+u(t) = K_p * e(t) + K_i * integral(e(tau) dtau) + K_d * de(t)/dt
+
+Components:
+- Proportional term (K_p): Provides immediate response proportional to the tracking error e(t); high gain increases speed but risks overshoot and closed-loop instability.
+- Integral term (K_i): Accumulates past errors over time, eliminating steady-state offset error (Type 0 system step tracking).
+- Derivative term (K_d): Predicts future error behavior based on rate of change, providing damping to suppress oscillations.
+
+Ziegler-Nichols Closed-Loop Frequency Response Method:
+1. Set K_i = 0 and K_d = 0.
+2. Increase K_p until the system exhibits sustained, stable marginal oscillations with ultimate gain K_u.
+3. Record the critical oscillation period T_u.
+4. Calculate parameters: K_p = 0.6 * K_u, T_i = 0.5 * T_u, T_d = 0.125 * T_u.

@@ -1,0 +1,22 @@
+[
+  {
+    "q": "deadlock",
+    "expected": "os_deadlocks.txt"
+  },
+  {
+    "q": "Thevenin",
+    "expected": "circuits_thevenin.txt"
+  },
+  {
+    "q": "normal form BCNF",
+    "expected": "db_normalization.md"
+  },
+  {
+    "q": "three-way handshake",
+    "expected": "networks_tcp_handshake.md"
+  },
+  {
+    "q": "depletion region silicon",
+    "expected": "semiconductors_diode.txt"
+  }
+]

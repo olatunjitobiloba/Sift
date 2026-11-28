@@ -1,0 +1,7 @@
+# Semiconductor Devices: P-N Junction Diodes
+
+When p-type silicon and n-type silicon meet at a metallurgical junction, holes diffuse toward the n-side and electrons diffuse toward the p-side.
+
+Uncovered donor and acceptor ions create a depletion region that establishes a built-in barrier potential of roughly 0.7 volts in silicon diodes and 0.3 volts in germanium diodes.
+
+Applying forward bias lowers the barrier width so majority carrier current conducts across the junction.

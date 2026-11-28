@@ -1,0 +1,13 @@
+# EIE 415: Electric Power Systems Engineering
+## Topic: Load Flow Analysis and Bus Classification
+
+Power flow (load flow) analysis computes steady-state voltage magnitudes, phase angles, real power P, and reactive power Q at each bus in an interconnected transmission grid under specified load conditions.
+
+Bus Classifications:
+1. Slack / Reference Bus (Swing Bus): Single bus where voltage magnitude |V| and phase angle delta (usually 0 degrees) are specified. Accounts for net transmission losses.
+2. Generator Bus (PV Bus): Real power generation P_g and voltage magnitude |V| are specified. Reactive power Q is calculated within generator capability limits.
+3. Load Bus (PQ Bus): Net real power P_d and reactive power demand Q_d are specified. Voltage magnitude |V| and phase angle delta are state variables to be calculated.
+
+Numerical Solution Methods:
+- Gauss-Seidel Method: Simple successive substitution using nodal admittance matrix Y_bus; slower convergence for large power grids.
+- Newton-Raphson Method: Iterative solution using Jacobian matrix of partial derivatives; exhibits quadratic convergence and high numerical stability for complex networks.

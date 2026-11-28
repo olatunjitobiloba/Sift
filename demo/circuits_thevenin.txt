@@ -1,0 +1,10 @@
+# Network Analysis: Thevenin and Norton Equivalent Circuits
+
+Thevenin's theorem states that any linear two-terminal network containing resistors and independent sources can be simplified to a single independent voltage source V_th in series with an equivalent resistance R_th.
+
+Steps to calculate the Thevenin equivalent:
+1. Disconnect the load resistor between output terminals A and B.
+2. Compute the open-circuit voltage V_oc = V_th across terminals A and B.
+3. Deactivate independent sources (short voltage sources, open current sources) to measure R_th.
+
+Norton's theorem is the dual representation using an equivalent current source I_N in parallel with R_N = R_th.

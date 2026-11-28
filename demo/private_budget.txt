@@ -1,0 +1,6 @@
+# Synthetic Sample Private File (Demo Exclusion Test Only)
+
+Fictional allowance budget ledger for demonstrating Sift exclusion filters:
+- Stationery allowance: 5000
+- Cafeteria voucher: 3200
+- Exclude pattern demo token: private_demo_marker

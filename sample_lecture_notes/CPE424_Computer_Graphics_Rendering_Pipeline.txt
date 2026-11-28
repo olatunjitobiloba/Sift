@@ -1,0 +1,21 @@
+# CPE 424: Computer Graphics & Visualization
+## Topic: Lighting and the Phong Reflection Model
+
+In 3D computer graphics, illumination models simulate how light interacts with virtual surface geometry to produce realistic visual shading.
+
+The Phong Illumination Model calculates reflected light intensity I at a surface point as the sum of three distinct components:
+I = I_ambient + I_diffuse + I_specular
+
+1. Ambient Component (I_ambient):
+   Simulates background indirect scattering of light in the environment:
+   I_ambient = k_a * I_a (where k_a is ambient reflection coefficient).
+
+2. Diffuse Component (I_diffuse):
+   Follows Lambert's Cosine Law for rough, matte surfaces reflecting light equally in all directions:
+   I_diffuse = k_d * I_l * max(0, N . L)
+   where N is surface normal vector and L is unit vector toward the light source.
+
+3. Specular Component (I_specular):
+   Models shiny highlights reflecting in the direction of the reflection vector R:
+   I_specular = k_s * I_l * max(0, R . V)^alpha
+   where V is viewpoint vector, R is reflection vector 2(N . L)N - L, and alpha is surface shininess exponent. High alpha produces tight, mirror-like highlights.

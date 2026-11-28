@@ -54,23 +54,90 @@ CLOUD SERVICE (Metadata & Relay Only — No Raw Content)
 ## 4. Repository Structure & Key Deliverables
 - [`PLAN.md`](./PLAN.md) — CPE434 Week 2 Build Plan (Product, Incremental Process, Week 7 Increment, Tech Stack).
 - [`SCRUM.md`](./SCRUM.md) — CPE434 Week 3 Scrum Charter (Sprint rhythm, WIP limits, Definition of Done).
+- [`PROPOSAL.md`](./PROPOSAL.md) — CPE434 Week 4 Project Proposal (Problem definition, student interviews, archetypes, initial backlog, roles).
+- [`docs/REQUIREMENTS.md`](./docs/REQUIREMENTS.md) — System Requirements Specification (Functional FR1–FR15, ISO/IEC 25010 NFR1–NFR5, User Story cards).
+- [`docs/DECISIONS.md`](./docs/DECISIONS.md) — Architecture Decision Records (ADR 001: Local Agent Core Language).
+- [`docs/CI.md`](./docs/CI.md) — Continuous Integration & Gatekeeping Specification (GitHub Actions workflow, branch protection).
 - [`TEAM.md`](./TEAM.md) — Team collaboration log and individual branch verification.
+- [`docs/DEMO.md`](./docs/DEMO.md) — 5-minute Week 13 demo script, Wi-Fi-off rehearsal checklist, and honest system limits.
+- [`docs/STATUS.md`](./docs/STATUS.md) — Honest pre-demo evidence & readiness status table.
+- [`docs/viva/README.md`](./docs/viva/README.md) & [`docs/evidence/README.md`](./docs/evidence/README.md) — Viva defense notes and evidence screenshots index.
+- [`demo/`](./demo) — Synthetic 8-file sample study folder and 5-query verification suite.
 
 ---
 
-## 5. Development & How to Run
-*(Instructions will be updated as each module increments pass the Definition of Done).*
+## 5. Development & How to Run (Local Agent)
 
 ### Prerequisites
-- Git & GitHub
-- Java JDK 17+ / Python 3.10+ / Node.js LTS
-- VS Code
+- Git
+- Python **3.10+** (verified on Python 3.12 CI and Python 3.13 Windows)
+- Node.js **18+ LTS** (for Web / Mobile / Cloud Relay)
 
-```bash
-# Clone the repository
-git clone https://github.com/olatunjitobiloba/Sift.git
-cd Sift
+### Quick Start (Fresh Clone)
 
-# Switch to your feature branch before writing code
-git switch -c feature/<your-task-name>
-```
+1. **Clone the repository and enter `agent/`:**
+   ```bash
+   git clone https://github.com/olatunjitobiloba/Sift.git sift-fresh
+   cd sift-fresh
+   # Until PR #7 merges to main, check out feature/agent-skeleton:
+   git checkout feature/agent-skeleton
+   cd agent
+   ```
+
+2. **Create a virtual environment and install core dependencies** (takes ~5–15 seconds):
+   - **Windows (PowerShell):**
+     ```powershell
+     python -m venv .venv
+     .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+     ```
+     *(Calling `.\.venv\Scripts\python.exe` directly avoids Windows PowerShell `ExecutionPolicy` blocks on `Activate.ps1`. Or activate normally with `.venv\Scripts\Activate.ps1`.)*
+   - **macOS / Linux:**
+     ```bash
+     python3 -m venv .venv
+     source .venv/bin/activate
+     pip install -r requirements.txt
+     ```
+
+3. **Start the local agent (loopback `127.0.0.1` only):**
+   Check first if another local process occupies port `8765` (`netstat -ano | findstr 8765` on Windows or `lsof -i :8765` on macOS/Linux). If `8765` is in use, pass `--port 8766` instead (`smoke.py` and `eval/run_eval.py` detect `service: "sift-agent"` and fall back automatically from `8765` to `8766`):
+   - **Windows (PowerShell):**
+     ```powershell
+     .\.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8765
+     ```
+   - **macOS / Linux:**
+     ```bash
+     uvicorn app:app --host 127.0.0.1 --port 8765
+     ```
+
+4. **Verify health & grab your local API token** (created automatically on first agent startup in `~/.sift/token`):
+   - **Windows (PowerShell):**
+     ```powershell
+     Invoke-RestMethod http://127.0.0.1:8765/health   # expects {"ok": true, "service": "sift-agent"}
+     Get-Content $HOME\.sift\token
+     ```
+   - **macOS / Linux:**
+     ```bash
+     curl http://127.0.0.1:8765/health   # expects {"ok":true,"service":"sift-agent"}
+     cat ~/.sift/token
+     ```
+   Pass that value in the `X-Sift-Token` HTTP header on all endpoints except `/health`. (If you started on `8766`, replace `8765` with `8766`.)
+
+5. **Run Unit Tests & End-to-End Smoke Test** (installs lightweight `pytest` + `httpx`):
+   ```bash
+   pip install -r requirements.txt pytest httpx
+   pytest -q
+   python smoke.py
+   ```
+
+6. **Optional: Enable Experimental Semantic / Hybrid Search (`mode=meaning` / `mode=hybrid`):**
+   ```bash
+   pip install -r requirements-semantic.txt
+   ```
+   - **First-run timing note:** Installing `sentence-transformers` downloads PyTorch and transformers (~150 MB+ wheels, ~1–3 min depending on connection). The very first semantic query (`?mode=meaning`) downloads `all-MiniLM-L6-v2` (~90 MB from Hugging Face) once into `~/.cache/huggingface/hub` and takes ~3–15 seconds depending on bandwidth. Subsequent runs work offline (~413 ms per warm query encode on CPU; note that the current experimental endpoint re-embeds chunks per query).
+   - **Experimental status:** Keyword search remains the default (`mode=keyword`). Meaning mode currently ignores `ext` and `folder` filters.
+
+7. **Run the Demo Dataset Rehearsal:**
+   See [`docs/DEMO.md`](./docs/DEMO.md) and [`demo/queries.json`](./demo/queries.json). After launching the agent, evaluate the 5 known demo queries with:
+   ```bash
+   python ../eval/run_eval.py ../demo/queries.json
+   ```
