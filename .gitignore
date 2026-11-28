@@ -1,77 +1,24 @@
-# OS & IDE Files
-.DS_Store
-Thumbs.db
-desktop.ini
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Java
-*.class
-target/
-.gradle/
-build/
-*.jar
-*.war
-*.ear
-
-# Python & AI Environments
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-env/
-venv/
-ENV/
-*.egg-info/
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Node & Frontend (React / React Native / Expo)
-node_modules/
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-dist/
-build/
-.next/
-.expo/
-.expo-shared/
-web-build/
+pnpm-debug.log*
+lerna-debug.log*
 
-# Local Databases & Indices (Privacy Boundary - Never Commit User Data)
-*.sqlite
-*.sqlite3
-*.db
-*.db-shm
-*.db-wal
-local_index/
-data/
+node_modules
+dist
+dist-ssr
+*.local
 
-# Model Binaries & Heavy Weights (Download locally via scripts)
-models/
-*.onnx
-*.bin
-*.safetensors
-*.pt
-*.pth
-
-# Sensitive & Environment Variables
-.env
-.env.local
-.env.*.local
-*.pem
-*.key
-*.cert
-
-# Test Audio & Sample Files (Use golden set fixtures only)
-*.mp3
-*.m4a
-*.wav
-*.flac
-*.mp4
-temp/
-logs/
-*.log
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
